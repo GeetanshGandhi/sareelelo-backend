@@ -1,4 +1,4 @@
-package com.sareelelo.backend;
+package com.vastrika.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
