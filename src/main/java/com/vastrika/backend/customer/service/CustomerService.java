@@ -26,13 +26,15 @@ public class CustomerService {
     }
 
     public String registerCustomer(Customer customer){
+        System.out.println(customer.toString());
         if(userExists(customer.getCustomerEmail())) return "Exist";
         if(!isPasswordValid(customer.getPassword())) return "Invalid Password";
-        return customerRepository.save(customer).toString();
+        customerRepository.save(customer);
+        return "Success";
     }
 
     public static boolean isPasswordValid(String password) {
-        if (password == null || password.length() < 8 || password.length()>16)
+        if (password.length() < 8 || password.length()>16)
             return false;
         else {
             String uppercaseRegex = ".*[A-Z].*";
