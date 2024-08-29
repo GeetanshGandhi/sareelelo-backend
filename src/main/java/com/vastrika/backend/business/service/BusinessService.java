@@ -1,0 +1,62 @@
+package com.vastrika.backend.business.service;
+
+import com.vastrika.backend.business.model.Business;
+import com.vastrika.backend.business.repository.BusinessRepository;
+import com.vastrika.backend.city.model.City;
+import com.vastrika.backend.city.repository.CityRepository;
+import com.vastrika.backend.customer.model.Customer;
+import com.vastrika.backend.customer.service.PasswordValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+@Service
+public class BusinessService {
+
+    @Autowired
+    BusinessRepository businessRepository;
+
+    @Autowired
+    CityRepository cityRepository;
+    public String registerBusiness(Business business, String cityName){
+        City city = cityRepository.findByCityName(cityName);
+        business.setCity(city);
+        Optional<Business> isExist = businessRepository.findById(business.getOwnerEmail());
+        if(isExist.isPresent()){
+            return "Exists";
+        }
+        String mob = business.getContactNo();
+        if(mob.length()!=10) return "Invalid Mobile";
+        for(int i = 0; i<10; i++){
+            if (!Character.isDigit(mob.charAt(i))) return "Invalid Mobile";
+        }
+        if(!PasswordValidator.isPasswordValid(business.getPassword())) return "Invalid Password";
+        business.setApproval("Unchecked");
+        businessRepository.save(business);
+        return "Wait for verification";
+    }
+
+    public String loginBusiness(Business business){
+        Optional<Business> out = businessRepository.findById(business.getOwnerEmail());
+        if (out.isPresent()){
+            Business c = out.get();
+            if(Objects.equals(c.getPassword(),business.getPassword()))
+                return out.get().toString();
+            return "Invalid";
+        }
+        return "Not Found";
+    }
+
+    public String changeApproval(Business business){
+        Business old = businessRepository.findById(business.getOwnerEmail()).get();
+        old.setApproval(business.getApproval());
+        return businessRepository.save(old).toString();
+    }
+
+    public List<Business> getUncheckedApprovals(){
+        return businessRepository.findAllByApproval("Unchecked");
+    }
+}

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.regex.Pattern;
 
 @Service
 public class CustomerService {
@@ -26,33 +25,16 @@ public class CustomerService {
     }
 
     public String registerCustomer(Customer customer){
-        System.out.println(customer.toString());
         if(userExists(customer.getCustomerEmail())) return "Exist";
-        if(!isPasswordValid(customer.getPassword())) return "Invalid Password";
+        if(!PasswordValidator.isPasswordValid(customer.getPassword())) return "Invalid Password";
         customerRepository.save(customer);
         return "Success";
     }
 
-    public static boolean isPasswordValid(String password) {
-        if (password.length() < 8 || password.length()>16)
-            return false;
-        else {
-            String uppercaseRegex = ".*[A-Z].*";
-            String lowercaseRegex = ".*[a-z].*";
-            String digitRegex = ".*\\d.*";
-            String specialCharRegex = ".*[@#$%^&!/].*";
-
-            boolean hasUppercase = Pattern.matches(uppercaseRegex, password);
-            boolean hasLowercase = Pattern.matches(lowercaseRegex, password);
-            boolean hasDigit = Pattern.matches(digitRegex, password);
-            boolean hasSpecialChar = Pattern.matches(specialCharRegex, password);
-
-            return hasUppercase && hasLowercase && hasDigit && hasSpecialChar;
-        }
-    }
 
     //check if user exists
     boolean userExists(String email){
         return customerRepository.findById(email).isPresent();
     }
 }
+
