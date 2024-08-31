@@ -5,6 +5,8 @@ import com.vastrika.backend.city.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/city")
 @CrossOrigin
@@ -14,7 +16,7 @@ public class CityController {
     CityService cityService;
 
     @PostMapping("/add")
-    public String addCity(@RequestBody City city){
+    public String addCity(@RequestBody City  city){
         return cityService.addCity(city);
     }
 
@@ -26,5 +28,10 @@ public class CityController {
     @PostMapping("/getById")
     public City getCityByCityId(@RequestBody String cityId){
         return cityService.getCityById(cityId);
+    }
+
+    @PostMapping("/getbyState")
+    public List<City> getCitiesByState(@RequestBody String state){
+        return cityService.getCitiesByState(state);
     }
 }

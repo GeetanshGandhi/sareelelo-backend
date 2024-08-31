@@ -1,24 +1,27 @@
 package com.vastrika.backend.city.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.Type;
 
 @Entity
 public class City {
     @Id
-    private String cityId;
+    @Column(columnDefinition = "varchar(6)")
+    private String pinCode;
 
     private String cityName;
     private String state;
 
     public City(){}
 
-    public String getCityId() {
-        return cityId;
+    public String getPinCode() {
+        return pinCode;
     }
 
-    public void setCityId(String cityId) {
-        this.cityId = cityId;
+    public void setPinCode(String pinCode) {
+        this.pinCode = pinCode;
     }
 
     public String getCityName() {
@@ -40,7 +43,7 @@ public class City {
     @Override
     public String toString() {
         return "{" +
-                "\"cityId\":\"" + cityId + '\"'+
+                "\"pinCode\":\"" + pinCode + '\"'+
                 ", \"cityName\":\"" + cityName + '\"' +
                 ", \"state\":\"" + state + '\"' +
                 '}';
