@@ -2,6 +2,7 @@ package com.vastrika.backend.business.service;
 
 import com.vastrika.backend.business.model.Business;
 import com.vastrika.backend.business.repository.BusinessRepository;
+import com.vastrika.backend.category.model.Category;
 import com.vastrika.backend.city.model.City;
 import com.vastrika.backend.city.repository.CityRepository;
 import com.vastrika.backend.customer.model.Customer;
@@ -21,13 +22,15 @@ public class BusinessService {
 
     @Autowired
     CityRepository cityRepository;
-    public String registerBusiness(Business business, String cityName){
-        City city = cityRepository.findByCityName(cityName);
-        business.setCity(city);
+    public String registerBusiness(Business business, String cityName, String state, String categoryName){
         Optional<Business> isExist = businessRepository.findById(business.getOwnerEmail());
         if(isExist.isPresent()){
             return "Exists";
         }
+
+        City city = cityRepository.findByCityNameAndState(cityName, state);
+        business.setCity(city);
+        business.setCategory(new Category(categoryName));
         String mob = business.getContactNo();
         if(mob.length()!=10) return "Invalid Mobile";
         for(int i = 0; i<10; i++){

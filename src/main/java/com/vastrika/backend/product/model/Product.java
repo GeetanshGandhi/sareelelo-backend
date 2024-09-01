@@ -27,7 +27,7 @@ public class Product {
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name="cityId")
+    @JoinColumn(name="pinCode")
     private City city;
 
     public Product(){}

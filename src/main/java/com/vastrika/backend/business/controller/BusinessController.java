@@ -19,7 +19,9 @@ public class BusinessController {
 
     @PostMapping("/register")
     public String registerBusiness(@RequestParam("businessDet") String businessString,
-                                     @RequestParam("city") String cityName){
+                                   @RequestParam("city") String cityName,
+                                   @RequestParam("state") String state,
+                                   @RequestParam("categoryName") String categoryName){
         ObjectMapper mapper = new ObjectMapper();
         Business business = null;
         try {
@@ -27,7 +29,7 @@ public class BusinessController {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        return businessService.registerBusiness(business,cityName);
+        return businessService.registerBusiness(business,cityName, state, categoryName);
     }
 
     @PostMapping("/login")

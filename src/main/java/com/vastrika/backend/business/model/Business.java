@@ -21,7 +21,7 @@ public class Business {
     private String approval;
 
     @ManyToOne
-    @JoinColumn(name="cityId")
+    @JoinColumn(name="pinCode")
     private City city;
 
     @ManyToOne

@@ -38,13 +38,13 @@ public class ProductController {
         try{
             product = mapper.readValue(productString, Product.class);
         } catch (JsonProcessingException e){
-            return new ResponseEntity<>(new FileResponse(null, "Could not process product details"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new FileResponse(null, "Invalid product"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         Business business = null;
         try{
             business = mapper.readValue(businessString, Business.class);
         } catch(JsonProcessingException e){
-            return new ResponseEntity<>(new FileResponse(null, "Could not process product details"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new FileResponse(null, "Invalid product"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         Product dbOut = productService.saveProductToDB(product, business);
 
@@ -54,7 +54,8 @@ public class ProductController {
             imageFileName = productService.uploadImage(imageFilePath, inputImage, dbOut.getProductId());
         } catch (IOException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(new FileResponse(null, "Image not uploaded"), HttpStatus.INTERNAL_SERVER_ERROR);
+            productService.deleteDueToException(dbOut.getProductId());
+            return new ResponseEntity<>(new FileResponse(null, "Invalid image"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(new FileResponse(imageFileName, "Successfully Uploaded"), HttpStatus.OK);
     }

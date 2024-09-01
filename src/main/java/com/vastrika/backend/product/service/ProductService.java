@@ -28,12 +28,12 @@ public class ProductService {
 
         //create new image name:
         assert fileName != null;
-        String imageName = productId+fileName.substring(fileName.lastIndexOf("."));
+        String imageName = productId + ".jpg";
+//                +fileName.substring(fileName.lastIndexOf("."));
 
         //full path of image target folder
         String filePath = path + File.separator + imageName;
 
-        System.out.println(filePath);
         //create folder if not created
         File file1 = new File(path);
         if(!file1.exists()) file1.mkdir();
@@ -72,5 +72,10 @@ public class ProductService {
         } catch (NoSuchElementException e){
             return new ArrayList<>();
         }
+    }
+
+    //delete if image not uploaded
+    public void deleteDueToException(int productId){
+        productRepository.deleteById(productId);
     }
 }
