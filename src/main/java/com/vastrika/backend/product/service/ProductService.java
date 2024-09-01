@@ -75,7 +75,8 @@ public class ProductService {
     }
 
     //delete if image not uploaded
-    public void deleteDueToException(int productId){
-        productRepository.deleteById(productId);
+    public String deleteProduct(Product product){
+        productRepository.delete(product);
+        return "Success";
     }
 }

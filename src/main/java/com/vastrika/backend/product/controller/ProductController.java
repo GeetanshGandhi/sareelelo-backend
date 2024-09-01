@@ -54,7 +54,7 @@ public class ProductController {
             imageFileName = productService.uploadImage(imageFilePath, inputImage, dbOut.getProductId());
         } catch (IOException e) {
             e.printStackTrace();
-            productService.deleteDueToException(dbOut.getProductId());
+            productService.deleteProduct(dbOut);
             return new ResponseEntity<>(new FileResponse(null, "Invalid image"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(new FileResponse(imageFileName, "Successfully Uploaded"), HttpStatus.OK);
@@ -63,5 +63,10 @@ public class ProductController {
     @PostMapping("/getByOwner")
     public List<Product> getProductsByOwner(@RequestBody String ownerEmail){
         return productService.getByOwner(ownerEmail);
+    }
+
+    @PostMapping("/delete")
+    public String deleteProd(@RequestBody Product product){
+        return productService.deleteProduct(product);
     }
 }
