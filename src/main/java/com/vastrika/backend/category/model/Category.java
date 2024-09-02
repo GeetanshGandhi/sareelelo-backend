@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 public class Category {
     @Id
+    @Column(columnDefinition = "varchar(25) DEFAULT 'uncategorized'")
     private String categoryName;
 
     public Category(){}

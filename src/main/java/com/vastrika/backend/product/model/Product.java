@@ -4,6 +4,8 @@ import com.vastrika.backend.business.model.Business;
 import com.vastrika.backend.category.model.Category;
 import com.vastrika.backend.city.model.City;
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Product {
@@ -20,14 +22,17 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "ownerEmail")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Business business;
 
     @ManyToOne
     @JoinColumn(name="categoryName")
+    @OnDelete(action = OnDeleteAction.SET_DEFAULT)
     private Category category;
 
     @ManyToOne
     @JoinColumn(name="pinCode")
+    @OnDelete(action = OnDeleteAction.SET_DEFAULT)
     private City city;
 
     public Product(){}

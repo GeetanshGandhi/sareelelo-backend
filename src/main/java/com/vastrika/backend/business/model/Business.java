@@ -2,10 +2,9 @@ package com.vastrika.backend.business.model;
 
 import com.vastrika.backend.category.model.Category;
 import com.vastrika.backend.city.model.City;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 public class Business {
@@ -22,10 +21,12 @@ public class Business {
 
     @ManyToOne
     @JoinColumn(name="pinCode")
+    @OnDelete(action = OnDeleteAction.SET_DEFAULT)
     private City city;
 
     @ManyToOne
     @JoinColumn(name = "categoryName")
+    @OnDelete(action = OnDeleteAction.SET_DEFAULT)
     private Category category;
 
     public Business(){}
