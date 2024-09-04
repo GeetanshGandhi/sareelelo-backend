@@ -69,4 +69,9 @@ public class ProductController {
     public String deleteProd(@RequestBody Product product){
         return productService.deleteProduct(product);
     }
+
+    @GetMapping("/getAll")
+    public List<Product> getAllProd(){
+        return productService.getAll();
+    }
 }

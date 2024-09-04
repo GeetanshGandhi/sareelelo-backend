@@ -74,6 +74,10 @@ public class ProductService {
         }
     }
 
+    public List<Product> getAll(){
+        return productRepository.findAll();
+    }
+
     //delete if image not uploaded
     public String deleteProduct(Product product){
         productRepository.delete(product);
