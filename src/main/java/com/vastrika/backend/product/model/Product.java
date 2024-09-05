@@ -1,11 +1,15 @@
 package com.vastrika.backend.product.model;
 
 import com.vastrika.backend.business.model.Business;
+import com.vastrika.backend.cart.model.CartItem;
 import com.vastrika.backend.category.model.Category;
 import com.vastrika.backend.city.model.City;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.List;
 
 @Entity
 public class Product {
@@ -34,6 +38,9 @@ public class Product {
     @JoinColumn(name="pinCode")
     @OnDelete(action = OnDeleteAction.SET_DEFAULT)
     private City city;
+
+    @OneToMany(fetch=FetchType.LAZY, mappedBy = "product")
+    private List<CartItem> cartItems;
 
     public Product(){}
 

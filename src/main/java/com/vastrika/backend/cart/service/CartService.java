@@ -16,11 +16,23 @@ public class CartService {
     CartItemRepository cartItemRepository;
 
     public String addToCart(Customer customer, Product product, int quantity){
+        CartItem found = cartItemRepository.findByCustomerAndProduct(customer,product);
+        if(found!=null) return "Exist";
         cartItemRepository.save(new CartItem(customer, product, quantity));
         return "Success";
+
     }
 
     public List<CartItem> getCartItemsByCustomer(Customer customer){
         return cartItemRepository.findAllByCustomer(customer);
+    }
+
+    public String deleteCartItem(CartItem cartItem){
+        try{
+            cartItemRepository.delete(cartItem);
+            return "Success";
+        } catch (Exception e){
+            return "Failure";
+        }
     }
 }
