@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Product {
@@ -39,8 +40,8 @@ public class Product {
     @OnDelete(action = OnDeleteAction.SET_DEFAULT)
     private City city;
 
-    @OneToMany(fetch=FetchType.LAZY, mappedBy = "product")
-    private List<CartItem> cartItems;
+//    @OneToMany(fetch=FetchType.LAZY, mappedBy = "product")
+//    private Set<CartItem> cartItems;
 
     public Product(){}
 

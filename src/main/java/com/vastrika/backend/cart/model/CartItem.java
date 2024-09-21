@@ -25,8 +25,7 @@ public class CartItem {
     private int quantity;
 
     public CartItem(){}
-
-    public CartItem(Customer customer,Product product, int quantity){
+    public CartItem(Customer customer, Product product, int quantity){
         this.customer = customer;
         this.product = product;
         this.quantity = quantity;

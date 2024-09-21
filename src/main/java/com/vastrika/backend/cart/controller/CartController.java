@@ -19,25 +19,20 @@ public class CartController {
     CartService cartService;
 
     @PostMapping("/add")
-    public String addToCart(@RequestParam("customer") String customerStr,
-                            @RequestParam("product") String productStr,
-                            @RequestParam("quantity") String quantity){
-
-        ObjectMapper mapper = new ObjectMapper();
-        Customer customer = null;
-        Product product = null;
-        try{
-            customer = mapper.readValue(customerStr, Customer.class);
-            product = mapper.readValue(productStr, Product.class);
-        } catch(JsonProcessingException e){
-            return "request not processed";
-        }
-
-        return cartService.addToCart(customer, product, Integer.parseInt(quantity));
+    public String addToCart(@RequestParam("customerEmail") String customerEmail,
+                            @RequestParam("productId") int productId,
+                            @RequestParam("quantity") int quantity){
+        return cartService.addToCart(customerEmail, productId, quantity);
     }
 
     @PostMapping("/getByCustomer")
     public List<CartItem> getCartByCustomer(@RequestBody Customer customer){
         return cartService.getCartItemsByCustomer(customer);
+    }
+
+    @PostMapping("/delete")
+    public String deleteFromCart(@RequestParam("customerEmail") String customerEmail,
+                                 @RequestParam("productId") int productId){
+        return cartService.deletefromCart(customerEmail, productId);
     }
 }
