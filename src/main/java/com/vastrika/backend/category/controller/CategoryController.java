@@ -16,7 +16,7 @@ public class CategoryController {
 
     @PostMapping("/add")
     public String addCategory(@RequestBody String categoryname){
-        return categoryService.addCategory(categoryname);
+        return categoryService.addCategory(categoryname.replace("\"",""));
     }
 
     @PostMapping("/getByName")
