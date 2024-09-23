@@ -1,18 +1,18 @@
 package com.vastrika.backend.business.service;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.vastrika.backend.business.model.Business;
 import com.vastrika.backend.business.repository.BusinessRepository;
 import com.vastrika.backend.category.model.Category;
 import com.vastrika.backend.city.model.City;
 import com.vastrika.backend.city.repository.CityRepository;
-import com.vastrika.backend.customer.model.Customer;
 import com.vastrika.backend.customer.service.PasswordValidator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 @Service
