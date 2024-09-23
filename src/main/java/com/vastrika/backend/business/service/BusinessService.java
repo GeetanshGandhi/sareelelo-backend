@@ -56,7 +56,7 @@ public class BusinessService {
 
     public String changeApproval(Business business){
         Business old = businessRepository.findById(business.getOwnerEmail()).get();
-        old.setApproval(business.getApproval());
+        old.setApproval("Approved");
         return businessRepository.save(old).toString();
     }
 
