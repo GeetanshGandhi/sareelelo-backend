@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vastrika.backend.business.model.Business;
 import com.vastrika.backend.product.model.Product;
-import com.vastrika.backend.product.payload.FileResponse;
 import com.vastrika.backend.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +27,7 @@ public class ProductController {
     private String imageFilePath;
 
     @PostMapping("/saveNew")
-    public ResponseEntity<FileResponse> saveNewProduct(
+    public String saveNewProduct(
             @RequestParam("productDet") String productString,
             @RequestParam("businessDet") String businessString,
             @RequestParam("productImage") MultipartFile inputImage){
@@ -38,26 +37,20 @@ public class ProductController {
         try{
             product = mapper.readValue(productString, Product.class);
         } catch (JsonProcessingException e){
-            return new ResponseEntity<>(new FileResponse(null, "Invalid product"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return "Invalid product";
         }
         Business business = null;
         try{
             business = mapper.readValue(businessString, Business.class);
         } catch(JsonProcessingException e){
-            return new ResponseEntity<>(new FileResponse(null, "Invalid product"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return "Invalid product";
         }
-        Product dbOut = productService.saveProductToDB(product, business);
-
-        //upload image to file system
-        String imageFileName;
         try {
-            imageFileName = productService.uploadImage(imageFilePath, inputImage, dbOut.getProductId());
+            Product dbOut = productService.saveProductToDB(product, business, inputImage);
+            return "Success";
         } catch (IOException e) {
-            e.printStackTrace();
-            productService.deleteProduct(dbOut);
-            return new ResponseEntity<>(new FileResponse(null, "Invalid image"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return "Failure";
         }
-        return new ResponseEntity<>(new FileResponse(imageFileName, "Successfully Uploaded"), HttpStatus.OK);
     }
 
     @PostMapping("/getByOwner")
@@ -73,5 +66,16 @@ public class ProductController {
     @GetMapping("/getAll")
     public List<Product> getAllProd(){
         return productService.getAll();
+    }
+
+    @PostMapping("/updateImage")
+    public String updateProdImg(@RequestParam("productId") int productId,
+                                @RequestParam("productImage") MultipartFile productImage){
+        try {
+            return productService.updateImage(productId, productImage);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return "Failure";
+        }
     }
 }

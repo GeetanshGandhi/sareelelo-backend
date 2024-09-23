@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @Service
 public class BusinessService {
 
@@ -61,5 +62,9 @@ public class BusinessService {
 
     public List<Business> getUncheckedApprovals(){
         return businessRepository.findAllByApproval("Unchecked");
+    }
+
+    public List<Business> findBusinessByCity(String pinCode){
+        return businessRepository.findAllByCity(cityRepository.findById(pinCode).get());
     }
 }

@@ -11,38 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @Service
 public class ProductService {
-
-    public String uploadImage(String path, MultipartFile file, int productId) throws IOException {
-        //getting file name
-        String fileName = file.getOriginalFilename();
-
-        //create new image name:
-        assert fileName != null;
-        String imageName = productId + ".jpg";
-//                +fileName.substring(fileName.lastIndexOf("."));
-
-        //full path of image target folder
-        String filePath = path + File.separator + imageName;
-
-        //create folder if not created
-        File file1 = new File(path);
-        if(!file1.exists()) file1.mkdir();
-
-        //copy input image to given file path
-        Files.copy(file.getInputStream(), Paths.get(filePath));
-
-        return imageName;
-    }
 
     @Autowired
     ProductRepository productRepository;
@@ -50,7 +29,13 @@ public class ProductService {
     CityRepository cityRepository;
     @Autowired
     BusinessRepository businessRepository;
-    public Product saveProductToDB(Product product, Business business){
+    public Product saveProductToDB(Product product, Business business, MultipartFile productImage) throws IOException{
+        //processing image and converting it to .jpg format
+        BufferedImage bufferedImage = ImageIO.read(productImage.getInputStream());
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        ImageIO.write(bufferedImage, "jpg",output);
+        product.setProductImage(output.toByteArray());
+
         product.setCity(business.getCity());
         product.setCategory(business.getCategory());
         product.setBusiness(business);
@@ -64,6 +49,18 @@ public class ProductService {
         old.setDescription(newp.getDescription());
         old.setProductName(newp.getProductName());
         return productRepository.save(old);
+    }
+
+    public String updateImage(int productId, MultipartFile productImage) throws  IOException{
+        Product prod = productRepository.findById(productId).get();
+
+        BufferedImage bufferedImage = ImageIO.read(productImage.getInputStream());
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        ImageIO.write(bufferedImage, "jpg",output);
+        prod.setProductImage(output.toByteArray());
+
+        productRepository.save(prod);
+        return "Success";
     }
 
     public List<Product> getByOwner(String owner){

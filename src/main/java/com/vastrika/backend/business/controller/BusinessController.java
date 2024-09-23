@@ -46,4 +46,9 @@ public class BusinessController {
     public List<Business> getUnchecked(){
         return businessService.getUncheckedApprovals();
     }
+
+    @PostMapping("/getByCity")
+    public List<Business> getAllByCity(@RequestBody String pinCode){
+        return businessService.findBusinessByCity(pinCode);
+    }
 }

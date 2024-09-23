@@ -25,6 +25,10 @@ public class Product {
     private double discount;
     private int quantityAvailable;
 
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] productImage;
+
     @ManyToOne
     @JoinColumn(name = "ownerEmail")
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -115,5 +119,13 @@ public class Product {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public byte[] getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(byte[] productImage) {
+        this.productImage = productImage;
     }
 }

@@ -3,6 +3,7 @@ package com.vastrika.backend.city.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -13,6 +14,11 @@ public class City {
 
     private String cityName;
     private String state;
+
+    private String iconType;
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] icon;
 
     public City(){}
 
@@ -38,6 +44,22 @@ public class City {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getIconType() {
+        return iconType;
+    }
+
+    public void setIconType(String iconType) {
+        this.iconType = iconType;
+    }
+
+    public byte[] getIcon() {
+        return icon;
+    }
+
+    public void setIcon(byte[] icon) {
+        this.icon = icon;
     }
 
     @Override
