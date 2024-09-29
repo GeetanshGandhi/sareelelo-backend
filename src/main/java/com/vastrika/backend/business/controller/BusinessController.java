@@ -51,4 +51,9 @@ public class BusinessController {
     public List<Business> getAllByCity(@RequestBody String pinCode){
         return businessService.findBusinessByCity(pinCode);
     }
+
+    @PostMapping("/getByEmail")
+    public Business getBusinessByEmail(@RequestBody String ownerEmail){
+        return businessService.getByEmail(ownerEmail);
+    }
 }

@@ -75,6 +75,14 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<Product> getByIds(List<Integer> prodIds){
+        List<Product> out = new ArrayList<>();
+        for(int i: prodIds){
+            out.add(productRepository.findById(i).get());
+        }
+        return out;
+    }
+
     //delete if image not uploaded
     public String deleteProduct(Product product){
         productRepository.delete(product);

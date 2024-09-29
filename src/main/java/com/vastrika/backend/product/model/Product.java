@@ -20,6 +20,7 @@ public class Product {
     private int productId;
 
     private String productName;
+    @Column(columnDefinition = "varchar(1500)")
     private String description;
     private double price;
     private double discount;

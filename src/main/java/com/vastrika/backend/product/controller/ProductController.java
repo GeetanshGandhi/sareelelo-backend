@@ -68,6 +68,11 @@ public class ProductController {
         return productService.getAll();
     }
 
+    @PostMapping("/getByIds")
+    public List<Product> getAllProductsByIds(@RequestBody List<Integer> ids){
+        return productService.getByIds(ids);
+    }
+
     @PostMapping("/updateImage")
     public String updateProdImg(@RequestParam("productId") int productId,
                                 @RequestParam("productImage") MultipartFile productImage){

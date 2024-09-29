@@ -67,4 +67,8 @@ public class BusinessService {
     public List<Business> findBusinessByCity(String pinCode){
         return businessRepository.findAllByCity(cityRepository.findById(pinCode).get());
     }
+
+    public Business getByEmail(String ownerEmail){
+        return businessRepository.findById(ownerEmail).get();
+    }
 }
