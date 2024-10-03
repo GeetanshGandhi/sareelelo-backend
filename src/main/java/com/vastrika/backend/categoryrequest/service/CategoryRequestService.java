@@ -1,10 +1,11 @@
 package com.vastrika.backend.categoryrequest.service;
-import com.vastrika.backend.categoryrequest.model.*;
-import com.vastrika.backend.categoryrequest.repository.*;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.vastrika.backend.categoryrequest.model.CategoryRequest;
+import com.vastrika.backend.categoryrequest.repository.CategoryRequestRepository;
 
 @Service
 public class CategoryRequestService {
