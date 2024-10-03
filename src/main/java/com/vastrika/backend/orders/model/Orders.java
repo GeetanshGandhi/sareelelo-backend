@@ -1,5 +1,6 @@
 package com.vastrika.backend.orders.model;
 
+import com.vastrika.backend.business.model.Business;
 import com.vastrika.backend.customer.model.Customer;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -17,6 +18,7 @@ public class Orders {
     private double tax;
     private String paymentMethod;
     private String status;
+    private String remark;
 
     private LocalDateTime orderDateTime;
 
@@ -24,6 +26,12 @@ public class Orders {
     @JoinColumn(name = "customerEmail")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "ownerEmail")
+    @OnDelete(action = OnDeleteAction.SET_NULL)
+    private Business business;
+
 
     public Orders(){}
 
@@ -35,6 +43,7 @@ public class Orders {
         this.status = status;
         this.orderDateTime = orderDateTime;
         this.customer = customer;
+        this.business = business;
     }
 
     public int getOrderId() {

@@ -36,5 +36,15 @@ public class CustomerService {
     boolean userExists(String email){
         return customerRepository.findById(email).isPresent();
     }
+
+    public Customer updateAddress(String customerEmail, String hno, String sbname, String lmark, String city, String state){
+        Customer cust = customerRepository.findById(customerEmail).get();
+        cust.setHouseNumber(hno);
+        cust.setStreetBuildingName(sbname);
+        cust.setLandmark(lmark);
+        cust.setCity(city);
+        cust.setState(state);
+        return customerRepository.save(cust);
+    }
 }
 
