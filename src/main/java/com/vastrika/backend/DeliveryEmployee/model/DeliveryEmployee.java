@@ -4,12 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class DeliveryEmployeeModel {
+public class DeliveryEmployee {
      @Id
     private String mailID;
     private String EmployeeName;
 
-    public DeliveryEmployeeModel(){}
+    public DeliveryEmployee(){}
 
     public String getmailID() {
         return mailID;
