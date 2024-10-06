@@ -17,8 +17,6 @@ public class Orders {
     private int subTotal;
     private double tax;
     private String paymentMethod;
-    private String status;
-    private String remark;
 
     private LocalDateTime orderDateTime;
 
@@ -27,23 +25,16 @@ public class Orders {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
 
-    @ManyToOne
-    @JoinColumn(name = "ownerEmail")
-    @OnDelete(action = OnDeleteAction.SET_NULL)
-    private Business business;
-
 
     public Orders(){}
 
-    public Orders(Customer customer, int subTotal, double tax, double grandTotal, LocalDateTime orderDateTime, String status, String paymentMethod) {
+    public Orders(Customer customer, int subTotal, double tax, double grandTotal, LocalDateTime orderDateTime, String paymentMethod) {
         this.grandTotal = grandTotal;
         this.subTotal = subTotal;
         this.tax = tax;
         this.paymentMethod = paymentMethod;
-        this.status = status;
         this.orderDateTime = orderDateTime;
         this.customer = customer;
-        this.business = business;
     }
 
     public int getOrderId() {
@@ -84,14 +75,6 @@ public class Orders {
 
     public void setPaymentMethod(String paymentMethod) {
         this.paymentMethod = paymentMethod;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public LocalDateTime getOrderDateTime() {

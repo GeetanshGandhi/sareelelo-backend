@@ -35,4 +35,11 @@ public class CartController {
                                  @RequestParam("productId") int productId){
         return cartService.deletefromCart(customerEmail, productId);
     }
+
+    @PostMapping("/updateQty")
+    public CartItem updateQuantity(@RequestParam("customerEmail") String customerEmail,
+                                   @RequestParam("productId") int productId,
+                                   @RequestParam("newQty") int newQty){
+        return cartService.updateQuantity(customerEmail, productId, newQty);
+    }
 }

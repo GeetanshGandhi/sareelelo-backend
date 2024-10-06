@@ -2,6 +2,7 @@ package com.vastrika.backend.cart.service;
 
 import com.vastrika.backend.cart.model.CartItem;
 import com.vastrika.backend.cart.repository.CartItemRepository;
+import com.vastrika.backend.customer.controller.CustomerController;
 import com.vastrika.backend.customer.model.Customer;
 import com.vastrika.backend.customer.repository.CustomerRepository;
 import com.vastrika.backend.product.model.Product;
@@ -46,5 +47,13 @@ public class CartService {
         } catch (Exception e){
             return "Failure";
         }
+    }
+
+    public CartItem updateQuantity(String customerEmail, int productId, int newQty){
+        Customer customer = customerRepository.findById(customerEmail).get();
+        Product product = productRepository.findById(productId).get();
+        CartItem cartItem = cartItemRepository.findByCustomerAndProduct(customer, product);
+        cartItem.setQuantity(newQty);
+        return cartItemRepository.save(cartItem);
     }
 }

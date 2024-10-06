@@ -1,6 +1,5 @@
 package com.vastrika.backend.orders.service;
 
-import com.vastrika.backend.business.model.Business;
 import com.vastrika.backend.cart.model.CartItem;
 import com.vastrika.backend.cart.repository.CartItemRepository;
 import com.vastrika.backend.customer.model.Customer;
@@ -12,13 +11,16 @@ import com.vastrika.backend.product.model.Product;
 import com.vastrika.backend.product.repository.ProductRepository;
 import com.vastrika.backend.productOrdered.model.ProductOrdered;
 import com.vastrika.backend.productOrdered.repository.ProductOrderedRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 @Service
 public class OrdersService {
 
@@ -31,8 +33,16 @@ public class OrdersService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Transactional
     public String addOrder(NewOrderData newOrderData){
         List<CartItem> cartItems = newOrderData.getCartItems();
+        //check if cart quantity exceeds available quantity
+        for(CartItem curr: cartItems){
+            Product currProd = productRepository.findById(curr.getProduct().getProductId()).get();
+            if(curr.getQuantity()> currProd.getQuantityAvailable()){
+                return "Quantity Unavailable for "+currProd.getProductName();
+            }
+        }
         Customer customer = cartItems.get(0).getCustomer();
         int subTotal = newOrderData.getSubTotal();
         double tax = newOrderData.getTax();
@@ -40,14 +50,23 @@ public class OrdersService {
         String paymentMethod = newOrderData.getPaymentMethod();
 
         Orders orders = new Orders(customer, subTotal, tax, grandTotal,
-                                    LocalDateTime.now(), "Placed", paymentMethod);
+                                    LocalDateTime.now(), paymentMethod);
 
         Orders addedData = ordersRepository.save(orders);
         List<ProductOrdered> productOrderedList = new ArrayList<>();
         for(CartItem curr: cartItems){
-            productOrderedList.add(new ProductOrdered(curr.getProduct(),
-                                                      addedData,
-                                                      curr.getQuantity()));
+            ProductOrdered currOrdered = new ProductOrdered();
+            currOrdered.setOrders(addedData);
+            currOrdered.setProduct(curr.getProduct());
+            currOrdered.setQuantity(curr.getQuantity());
+            currOrdered.setStatus("Placed");
+            currOrdered.setRemark("Order is placed by customer");
+            currOrdered.setOtpForCustomer(OTPGenerator.generate4DigitOTP());
+            double price = curr.getProduct().getPrice(), disc = curr.getProduct().getDiscount();
+            int rate = (int)(price - disc*price/100);
+            currOrdered.setRate(rate);
+
+            productOrderedList.add(currOrdered);
             //removing product from customer cart
             cartItemRepository.delete(curr);
             //updating quantityAvailable
@@ -68,8 +87,10 @@ public class OrdersService {
         }
         return output;
     }
-
-//    public List<PlacedOrderData> getPendingOrdersForBusiness(Business business){
-
-//    }
+}
+class OTPGenerator{
+    static int generate4DigitOTP(){
+        Random random = new Random();
+        return random.nextInt(9999-1000+1)+1000;
+    }
 }
