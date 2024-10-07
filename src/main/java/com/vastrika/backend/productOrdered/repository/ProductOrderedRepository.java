@@ -1,14 +1,15 @@
 package com.vastrika.backend.productOrdered.repository;
 
-import com.vastrika.backend.orders.model.Orders;
-import com.vastrika.backend.productOrdered.model.ProductOrdered;
-import com.vastrika.backend.productOrdered.model.ProductOrderedPK;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.vastrika.backend.orders.model.Orders;
+import com.vastrika.backend.productOrdered.model.ProductOrdered;
+import com.vastrika.backend.productOrdered.model.ProductOrderedPK;
 
 @Repository
 public interface ProductOrderedRepository extends JpaRepository<ProductOrdered, ProductOrderedPK> {
@@ -21,4 +22,7 @@ public interface ProductOrderedRepository extends JpaRepository<ProductOrdered, 
 
     @Query(value= "SELECT * FROM product_ordered where product_id = :productId and order_id = :orderId", nativeQuery = true)
     ProductOrdered findByProductAndOrder(@Param("productId") int productId, @Param("orderId") int orderId);
+
+    @Query(value= "SELECT * FROM product_ordered where status IN ('Packed', 'Dispatched')", nativeQuery=true)
+    List<ProductOrdered> findAllForAdmin();
 }

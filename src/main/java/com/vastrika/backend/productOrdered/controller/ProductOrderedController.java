@@ -1,11 +1,16 @@
 package com.vastrika.backend.productOrdered.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.vastrika.backend.productOrdered.model.ProductOrdered;
 import com.vastrika.backend.productOrdered.service.ProductOrderedService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -19,6 +24,23 @@ public class ProductOrderedController {
     public List<ProductOrdered> getByBusAndStat(@RequestParam("ownerEmail") String ownerEmail,
                                                 @RequestParam("status") String status){
         return productOrderedService.getByBusinessAndStatus(ownerEmail, status);
+    }
+
+    @PostMapping("/getAllForAdmin")
+    public List<ProductOrdered> getAllForAdmin(){
+        return productOrderedService.getAllForAdmin();
+    }
+
+    @PostMapping("/setToDispatched")
+    public String packedToDispatched(@RequestParam("productId") int productId,
+                                           @RequestParam("orderId") int orderId){
+        return productOrderedService.packedToDispatched(orderId, productId);
+    }
+
+    @PostMapping("/setToInCity")
+    public String DispatchedToInCity(@RequestParam("productId") int productId,
+                                           @RequestParam("orderId") int orderId){
+        return productOrderedService.dispatchedToInCity(orderId, productId);
     }
 
     @PostMapping("/updateForBusiness")

@@ -1,15 +1,16 @@
 package com.vastrika.backend.productOrdered.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.vastrika.backend.orders.model.Orders;
 import com.vastrika.backend.orders.repository.OrdersRepository;
 import com.vastrika.backend.product.model.Product;
 import com.vastrika.backend.product.repository.ProductRepository;
 import com.vastrika.backend.productOrdered.model.ProductOrdered;
 import com.vastrika.backend.productOrdered.repository.ProductOrderedRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ProductOrderedService {
@@ -31,6 +32,26 @@ public class ProductOrderedService {
         oldItem.setRemark("Order is Packed by the Retailer");
         productOrderedRepository.save(oldItem);
         return "Success";
+    }
+
+    public String packedToDispatched(int orderId, int productId){
+        ProductOrdered oldItem = productOrderedRepository.findByProductAndOrder(productId, orderId);
+        oldItem.setStatus("Dispatched");
+        oldItem.setRemark("The Order has been Dispatched");
+        productOrderedRepository.save(oldItem);
+        return "Success";
+    }
+
+    public String dispatchedToInCity(int orderId, int productId){
+        ProductOrdered oldItem = productOrderedRepository.findByProductAndOrder(productId, orderId);
+        oldItem.setStatus("InCity");
+        oldItem.setRemark("The Product has arrived in your city");
+        productOrderedRepository.save(oldItem);
+        return "Success";
+    }
+
+    public List<ProductOrdered> getAllForAdmin(){
+        return productOrderedRepository.findAllForAdmin();
     }
 
     public String cancelOrder(int orderId, int productId, String reason){
