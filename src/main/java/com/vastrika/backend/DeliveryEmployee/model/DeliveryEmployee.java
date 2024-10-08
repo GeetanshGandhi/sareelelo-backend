@@ -5,7 +5,7 @@ import jakarta.persistence.Id;
 
 @Entity
 public class DeliveryEmployee {
-     @Id
+    @Id
     private String employeeEmail;
     private String EmployeeName;
     private String password;

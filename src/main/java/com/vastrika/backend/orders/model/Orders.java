@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 public class Orders {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(columnDefinition = "int DEFAUL")
     private int orderId;
 
     private double grandTotal;

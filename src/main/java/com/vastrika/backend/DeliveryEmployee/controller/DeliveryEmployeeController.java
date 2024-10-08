@@ -3,6 +3,8 @@ package com.vastrika.backend.DeliveryEmployee.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,5 +45,14 @@ public class DeliveryEmployeeController {
     @PostMapping("/delete")
     public boolean deleteDeliveryEmployee(@RequestParam("mailID") String id){
         return deliveryEmployeeService.deleteDeliveryEmployee(id);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> loginEmployee(@RequestBody DeliveryEmployee deliveryEmployee){
+        String res = deliveryEmployeeService.loginDevEmp(deliveryEmployee);
+        if(res.equals("Invalid")){
+            return new ResponseEntity<>(res,HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }

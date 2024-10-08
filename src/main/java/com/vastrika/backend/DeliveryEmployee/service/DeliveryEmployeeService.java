@@ -35,4 +35,15 @@ public class DeliveryEmployeeService {
         }
         return false;
     }
+
+    public String loginDevEmp(DeliveryEmployee deliveryEmployee){
+        Optional<DeliveryEmployee> existing = deliveryEmployeeRepository.findById(deliveryEmployee.getEmployeeEmail());
+        if(existing.isEmpty()){
+            return "Exist";
+        }
+        if(deliveryEmployee.getPassword().equals(existing.get().getPassword())){
+            return existing.toString();
+        }
+        return "Invalid";
+    }
 }

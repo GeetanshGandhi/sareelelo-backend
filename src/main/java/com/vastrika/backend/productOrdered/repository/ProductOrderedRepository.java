@@ -25,4 +25,7 @@ public interface ProductOrderedRepository extends JpaRepository<ProductOrdered, 
 
     @Query(value= "SELECT * FROM product_ordered where status IN ('Packed', 'Dispatched')", nativeQuery=true)
     List<ProductOrdered> findAllForAdmin();
+
+    @Query(value="SELECT po.* from product_ordered po, orders o, customer c WHERE po.order_id=o.order_id and o.customer_email=c.customer_email and c.city= :city and c.state = :state", nativeQuery = true)
+    List<ProductOrdered> getByCustomerStateAndCity(@Param("city") String city, @Param("state") String state);
 }
